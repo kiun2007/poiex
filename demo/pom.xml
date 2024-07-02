@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.kiun2007</groupId>
+        <groupId>io.gitee.kiun2007</groupId>
         <artifactId>poiex</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -46,10 +46,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.kiun2007</groupId>
+            <groupId>io.gitee.kiun2007</groupId>
             <artifactId>poiex-core</artifactId>
-            <version>0.1.1</version>
-            <scope>compile</scope>
+            <version>1.0.2</version>
         </dependency>
 
         <dependency>

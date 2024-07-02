@@ -57,14 +57,73 @@ class TestDemo {
             body.add(response)
         }
 
-        val m = System.currentTimeMillis()
 
-        val stream = javaClass.classLoader.getResourceAsStream("生产订单模板.xlsx")
-        val work = ExcelExport(stream)
-            .export(mutableMapOf("maplist" to data.list!!, "name" to "goto"))
+
+        val stream = javaClass.classLoader.getResourceAsStream("松筒产品流转卡模板.xlsx")
+//        val work = ExcelExport(stream)
+//            .export(mutableMapOf("maplist" to data.list!!, "name" to "goto"))
+
+        val list = LinkedList<Map<String, String>>()
+        for (i in 1 .. 2) {
+
+            val map = LinkedHashMap<String, String>()
+            //设备编号
+            map.put("machineAndSort", "编号${i}");
+            //缸号
+            map.put("batchNo", "缸号${i}");
+            //生产序号
+            map.put("daySort", "");
+            //进缸日期
+            map.put("enterVatOrdDt", "");
+            //流转卡号
+            map.put("batchNoCodeBar", "");
+            //客户名称
+            map.put("customerNm", "");
+            //交期
+            map.put("manufOrdDt", "");
+            //合约号
+            map.put("cusContractCd", "");
+            //纱支
+            map.put("prodNm", "");
+            //纱批
+            map.put("lot", "");
+            //客色号
+            map.put("cusColorCd", "");
+
+            map.put("colorCd", "");
+            //颜色
+            //颜色
+            map.put("colorNm", "")
+            //投染数
+            //投染数
+            map.put("totalWeightIn", "")
+            //单重
+            //单重
+            map.put("pieceWgt", "")
+            //投染个数
+            //投染个数
+            map.put("totalQtyIn", "")
+            //工序留言
+            //工序留言
+            map.put("remark3", "")
+            //计划调度留言
+            //计划调度留言
+            map.put("planContent", "")
+            //打印人
+            //打印人
+            map.put("prtUserNm", "2024/12/1")
+            list.add(map)
+        }
+
+        val m = System.currentTimeMillis()
+        val work2 = ExcelExport(stream).exportSheets(list, {
+            return@exportSheets it["batchNo"]
+        }){
+            return@exportSheets 1
+        }
 
         println("=================================")
         println("${System.currentTimeMillis() - m} ms")
-        work.write(response.outputStream)
+        work2.write(response.outputStream)
     }
 }
