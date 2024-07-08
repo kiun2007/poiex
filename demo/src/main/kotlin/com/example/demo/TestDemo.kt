@@ -25,6 +25,38 @@ class StringUtil {
 @RestController
 class TestDemo {
 
+    @GetMapping("test-export")
+    fun testExport(response: HttpServletResponse)
+    {
+        //开始计时
+        val m = System.currentTimeMillis()
+
+        //导入大量数据
+        val jsonStream = javaClass.classLoader.getResourceAsStream("data.json")
+        val data = Gson().fromJson<PageResult<Map<String, Any>>>(
+            InputStreamReader(jsonStream), object : ParameterizedTypeReference<PageResult<Map<String, Any>>>(){}.type
+        )
+
+        //导入模板文件流
+        val stream = javaClass.classLoader.getResourceAsStream("test-export.xlsx")
+        val work = ExcelExport(stream).export(mutableMapOf("maplist" to data.list!!, "name" to "goto"))
+
+        //导出文件类型
+        response.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        //中文需要编码对应，防止乱码
+        response.addHeader(
+            "Content-Disposition", "Attachment;Filename=" + URLEncoder.encode("test-export", "UTF-8") + ".xlsx"
+        )
+        response.addHeader("Access-Control-Expose-Headers", "Content-Type, Content-Disposition")
+
+        //将工作簿写入到http响应
+        work.write(response.outputStream)
+
+        //输出总用时
+        println("=================================")
+        println("use ${System.currentTimeMillis() - m} ms")
+    }
+
     @GetMapping("/download")
     fun download(response: HttpServletResponse){
 

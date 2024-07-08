@@ -34,6 +34,11 @@ public class ExcelExport {
         }
     }
 
+    /**
+     * 模板导出
+     * @param object
+     * @return
+     */
     public Workbook export(Object object) {
 
         Workbook newWork = new SXSSFWorkbook(1000000);

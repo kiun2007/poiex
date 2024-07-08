@@ -3,6 +3,7 @@ package com.kiun.poiexcore.base
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.w3c.dom.Node
+import java.lang.reflect.Field
 import java.math.BigDecimal
 import java.util.regex.Pattern
 
@@ -17,7 +18,24 @@ abstract class ConfigDataBase(node: Node) {
                 continue
             }
 
-            val field = this.javaClass.getDeclaredField(child.nodeName)
+            var field:Field? = null
+
+            var clz: Class<*>? = this.javaClass
+            //遍历父类找到字段
+            while (clz != ConfigDataBase::class.java){
+                try {
+                    field = clz?.getDeclaredField(child.nodeName)
+                    break
+                } catch (ex: Throwable){
+                }
+                clz = clz?.superclass
+            }
+
+            if (field == null) {
+                continue
+            }
+
+
             val content = child.textContent
             field.isAccessible = true
 
@@ -65,6 +83,11 @@ abstract class ConfigDataBase(node: Node) {
 
     /**
      * 每个单元格处理
+     * @param cell 新创建的单元格
+     * @param sourceCell 模板中的单元格
+     * @param rowNum 所在行
+     * @param columnNum 所在列
+     * @param map 数据
      */
-    abstract fun dataToCell(cell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>)
+    abstract fun dataToCell(cell: Cell, sourceCell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>)
 }

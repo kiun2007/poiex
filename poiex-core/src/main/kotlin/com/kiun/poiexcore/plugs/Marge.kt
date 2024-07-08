@@ -22,7 +22,7 @@ class Marge(node: Node) : ConfigDataBase(node){
      */
     var h: NodeValue<Int>? = null
 
-    override fun dataToCell(cell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
+    override fun dataToCell(cell: Cell, sourceCell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
 
         val vMarge = v?.toValue(map)?:1
         val hMarge = h?.toValue(map)?:1

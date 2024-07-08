@@ -45,8 +45,17 @@ class GroupMerge(node: Node) : ConfigDataBase(node) {
         return sb.toString()
     }
 
-    override fun dataToCell(cell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
+    override fun listToEnd(endCell: Cell?, list: Collection<Any>) {
+        try {
+            if(endCell != null && endCell.rowIndex - lastIndex > 0){
+                endCell.sheet.addMergedRegion(CellRangeAddress(lastIndex, endCell.rowIndex, endCell.columnIndex, endCell.columnIndex))
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
 
+    override fun dataToCell(cell: Cell, sourceCell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
         val cellValue = map["t"]?.let { stringForFields(it) }
 
         if(lastValue != cellValue){
@@ -61,16 +70,6 @@ class GroupMerge(node: Node) : ConfigDataBase(node) {
             }
             lastIndex = rowNum
             lastValue = cellValue
-        }
-    }
-
-    override fun listToEnd(endCell: Cell?, list: Collection<Any>) {
-        try {
-            if(endCell != null && endCell.rowIndex - lastIndex > 0){
-                endCell.sheet.addMergedRegion(CellRangeAddress(lastIndex, endCell.rowIndex, endCell.columnIndex, endCell.columnIndex))
-            }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
         }
     }
 }

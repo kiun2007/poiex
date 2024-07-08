@@ -13,7 +13,7 @@ class GroupCount(node: Node) : ConfigDataBase(node) {
         return true
     }
 
-    override fun dataToCell(cell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
+    override fun dataToCell(cell: Cell, sourceCell: Cell, rowNum: Int, columnNum: Int, map: Map<String, Any>) {
 
     }
 }
